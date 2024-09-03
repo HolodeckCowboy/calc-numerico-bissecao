@@ -1,15 +1,18 @@
 #include <iostream>
 #include <cmath>
 #include <functional>
+#include <limits>
 
-double bisection(std::function<double(double)> func, double a, double b, double tol) {
+using namespace std;
+
+double bisection(function<double(double)> func, double a, double b, double tol) {
     double fa = func(a);
     double fb = func(b);
     double c, fc;
 
     if (fa * fb >= 0) {
-        std::cerr << "A função deve ter sinais opostos nos pontos a e b." << std::endl;
-        return std::numeric_limits<double>::quiet_NaN();
+        cerr << "A função deve ter sinais opostos nos pontos a e b." << endl;
+        return numeric_limits<double>::quiet_NaN();
     }
 
     while ((b - a) / 2 > tol) {
@@ -18,10 +21,12 @@ double bisection(std::function<double(double)> func, double a, double b, double 
 
         if (fc == 0.0) {
             break;
-        } else if (fa * fc < 0) {
+        }
+        else if (fa * fc < 0) {
             b = c;
             fb = fc;
-        } else {
+        }
+        else {
             a = c;
             fa = fc;
         }
@@ -31,27 +36,31 @@ double bisection(std::function<double(double)> func, double a, double b, double 
 }
 
 int main() {
-    std::cout << "Entre com os coeficientes da equação (ax^2 + bx + c = 0):" << std::endl;
+    cout << "Entre com os coeficientes da equação (ax^2 + bx + c = 0):" << endl;
 
     double a, b, c;
-    std::cin >> a >> b >> c;
+
+    cin >> a;
+    cin >> b;
+    cin >> c;
 
     auto func = [a, b, c](double x) {
         return a * x * x + b * x + c;
-    };
+        };
 
     double erro;
-    std::cout << "Entre com o erro esperado: ";
-    std::cin >> erro;
+    cout << "Entre com o erro esperado: ";
+    cin >> erro;
 
     double x0, x1;
-    std::cout << "Entre com o intervalo [x0, x1] onde a raiz está localizada: ";
-    std::cin >> x0 >> x1;
+    cout << "Entre com o intervalo [x0, x1] onde a raiz está localizada: ";
+    cin >> x0;
+    cin >> x1;
 
     double raiz = bisection(func, x0, x1, erro);
-    
-    if (!std::isnan(raiz)) {
-        std::cout << "A raiz aproximada é: " << raiz << std::endl;
+
+    if (!isnan(raiz)) {
+        cout << "A raiz aproximada é: " << raiz << endl;
     }
 
     return 0;
